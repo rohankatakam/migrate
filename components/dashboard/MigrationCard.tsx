@@ -17,14 +17,14 @@ export const MigrationCard: React.FC<MigrationCardProps> = ({ migration }) => {
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <CardTitle>{migration.name}</CardTitle>
-            <p className="text-sm text-gray-500 mt-1">{migration.repository}</p>
+            <p className="text-sm text-gray-500" style={{ marginTop: '0.25rem' }}>{migration.repository}</p>
           </div>
           <Badge status={migration.status} />
         </div>
       </CardHeader>
       <CardContent>
         <ProgressBar value={migration.progress.current} max={migration.progress.total} showLabel />
-        <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
+        <div className="grid grid-cols-2 gap-4 text-sm" style={{ marginTop: '1rem' }}>
           <div>
             <p className="text-gray-500">PRs Merged</p>
             <p className="font-semibold text-gray-900">
@@ -36,7 +36,7 @@ export const MigrationCard: React.FC<MigrationCardProps> = ({ migration }) => {
             <p className="font-semibold text-gray-900">{migration.prs.inReview}</p>
           </div>
         </div>
-        <div className="mt-3 flex items-center text-sm text-gray-500">
+        <div className="flex items-center text-sm text-gray-500" style={{ marginTop: '0.75rem' }}>
           <span>Est. completion: {migration.timeEstimate}</span>
         </div>
       </CardContent>

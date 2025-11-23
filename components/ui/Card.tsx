@@ -10,9 +10,12 @@ interface CardProps {
 export const Card: React.FC<CardProps> = ({ children, className = '', onClick, hover = false }) => {
   return (
     <div
-      className={`bg-white border border-gray-200 rounded-lg shadow-sm ${
+      className={`bg-white border border-gray-200 rounded-lg ${
         hover ? 'hover:shadow-md transition-shadow cursor-pointer' : ''
       } ${className}`}
+      style={{
+        boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)'
+      }}
       onClick={onClick}
     >
       {children}
