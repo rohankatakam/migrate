@@ -1,65 +1,91 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import React from 'react';
+import { StatsCard } from '@/components/dashboard/StatsCard';
+import { MigrationCard } from '@/components/dashboard/MigrationCard';
+import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
+import { mockMigrations, mockActivities, mockDashboardStats } from '@/lib/data/mockData';
+
+export default function Dashboard() {
+  const activeMigrations = mockMigrations.filter(m =>
+    ['executing', 'reviewing', 'merging'].includes(m.status)
+  );
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+        <p className="mt-2 text-gray-600">Welcome back! Here's what's happening with your migrations.</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <StatsCard
+          title="Total Migrations"
+          value={mockDashboardStats.totalMigrations}
+          icon={
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+            </svg>
+          }
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+        <StatsCard
+          title="Active Migrations"
+          value={mockDashboardStats.activeMigrations}
+          icon={
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          }
+        />
+        <StatsCard
+          title="Time Saved"
+          value={mockDashboardStats.timeSaved}
+          icon={
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          }
+        />
+        <StatsCard
+          title="PRs Merged"
+          value={mockDashboardStats.prsMerged}
+          icon={
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          }
+        />
+      </div>
+
+      <div className="mb-8">
+        <h2 className="text-2xl font-semibold text-gray-900 mb-4">Active Migrations</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {activeMigrations.map((migration) => (
+            <MigrationCard key={migration.id} migration={migration} />
+          ))}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <ActivityFeed activities={mockActivities} />
+        <div className="bg-white border border-gray-200 rounded-lg shadow-sm" style={{ padding: '1.5rem' }}>
+          <h3 className="text-xl font-semibold text-gray-900" style={{ marginBottom: '1rem' }}>Quick Actions</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <button className="w-full text-left bg-primary-50 hover:bg-primary-100 rounded-md transition-colors" style={{ padding: '0.75rem 1rem' }}>
+              <p className="font-medium text-primary-900">Create New Migration</p>
+              <p className="text-sm text-primary-700" style={{ marginTop: '0.25rem' }}>Start a new code migration project</p>
+            </button>
+            <button className="w-full text-left bg-gray-50 hover:bg-gray-100 rounded-md transition-colors" style={{ padding: '0.75rem 1rem' }}>
+              <p className="font-medium text-gray-900">View Analytics</p>
+              <p className="text-sm text-gray-600" style={{ marginTop: '0.25rem' }}>See detailed migration metrics</p>
+            </button>
+            <button className="w-full text-left bg-gray-50 hover:bg-gray-100 rounded-md transition-colors" style={{ padding: '0.75rem 1rem' }}>
+              <p className="font-medium text-gray-900">Configure Settings</p>
+              <p className="text-sm text-gray-600" style={{ marginTop: '0.25rem' }}>Manage integrations and preferences</p>
+            </button>
+          </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
